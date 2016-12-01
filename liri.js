@@ -9,10 +9,10 @@ var queryMovie = "http://www.omdbapi.com/?t=" + search + "&y=&plot=short&r=json&
 var count = 0;
 
 var twitKeys = new Twitter({
-  consumer_key: 'XOxPJS1IaspDShryjtG0duVZc',
-  consumer_secret: '6SmondWEQntT386ogvKI1WbGzgvYTVxMywXUOAFHniM3JwlukO',
-  access_token_key: '68810307-EYn0jK0YCvatn0oTgEDjoFzT7Sff1rMaFbTsGVTOv',
-  access_token_secret: 'CG5Zc29cB8FdVCNOUiR3eaLjWg0cI3Jvb9qAncvOO4Csb'
+  consumer_key: keys.consumer_key,
+  consumer_secret: keys.consumer_secret,
+  access_token_key: keys.access_token_key,
+  access_token_secret: keys.access_token_secret
 });
 
 function liriBot(command) {
@@ -114,8 +114,16 @@ if (search === ""){
 	request(queryMovie, function(error, response, body) {
 
 	  if (!error && response.statusCode === 200) {
-
-	  	console.log("The movie was released in " + JSON.parse(body).Released + ".");
+	  	console.log("Title: " + JSON.parse(body).Title);
+	  	console.log("Release: " + JSON.parse(body).Released);
+	  	console.log("Rated: " + JSON.parse(body).Rated);
+	  	console.log("Country: " + JSON.parse(body).Country);
+	  	console.log("Language: " + JSON.parse(body).Language);
+	  	console.log("Plot: " + JSON.parse(body).Plot + ".");
+	  	console.log("Actors: " + JSON.parse(body).Actors);
+	  	console.log("IMDb Rating: " + JSON.parse(body).imdbRating);
+	  	console.log("Tomatometer: " + JSON.parse(body).tomatoRating);
+	  	console.log("Rotten Tomatoes Link: " + JSON.parse(body).tomatoURL);
 	  	}
 	  });
 } else {
