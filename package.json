@@ -1,0 +1,26 @@
+{
+  "name": "lirinodeapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "keys.js",
+  "dependencies": {
+    "request": "^2.79.0",
+    "spotify": "^0.3.0",
+    "twitter": "^1.4.0",
+    "fs": "^0.0.1-security"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RJRowland93/LIRI-node-app.git"
+  },
+  "author": "Randal Rowland",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RJRowland93/LIRI-node-app/issues"
+  },
+  "homepage": "https://github.com/RJRowland93/LIRI-node-app#readme"
+}

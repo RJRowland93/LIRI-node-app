@@ -34,7 +34,6 @@ function liriBot(command) {
 	}
 }
 
-
 // ============================================================================================
 // node liri.js my-tweets
 // ============================================================================================
@@ -173,4 +172,12 @@ function doThis() {
 // Make sure you append each command you run to the log.txt file.
 
 // Do not overwrite your file each time you run a command.
+function log() {
+	fs.appendFile('log.txt', tweet(), 'utf-8', (err) => {
+	  if (err) throw err;
+	  console.log(command);
+	});
+}
+
 liriBot(command);
+log();
