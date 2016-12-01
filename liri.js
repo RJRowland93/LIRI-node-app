@@ -5,7 +5,7 @@ var fs = require("fs");
 var request = require("request");
 var spotify = require("spotify");
 var Twitter = require("twitter");
-var queryMovie = "http://www.omdbapi.com/?t=" + search + "&y=&plot=short&r=json";
+var queryMovie = "http://www.omdbapi.com/?t=" + search + "&y=&plot=short&r=json&tomatoes=true";
 var count = 0;
 
 var twitKeys = new Twitter({
@@ -15,7 +15,8 @@ var twitKeys = new Twitter({
   access_token_secret: 'CG5Zc29cB8FdVCNOUiR3eaLjWg0cI3Jvb9qAncvOO4Csb'
 });
 
-switch (command) {
+function liriBot(command) {
+	switch (command) {
 	case "my-tweets":
 		tweet();
 		break;
@@ -26,11 +27,13 @@ switch (command) {
 		movie();
 		break;
 	case "do-what-it-says":
-		console.log("do what");
+		doThis();
 		break;
 	default:
 		console.log("Sorry! Command not found. Please use one of the following commands:\nmy-tweets, spotify-this-song, movie-this, or do-what-it-says")
+	}
 }
+
 
 // ============================================================================================
 // node liri.js my-tweets
@@ -74,7 +77,7 @@ function song() {
 	    console.log("Song: " + JSON.stringify(data.tracks.items[0].name, null, 2));
 	    console.log("Preview: " + JSON.stringify(data.tracks.items[0].preview_url, null, 2));
 	    console.log("Album: " + JSON.stringify(data.tracks.items[0].album.name, null, 2));
-	})
+	});
 } else {
 	spotify.search({ type: 'track', query: '"' + search + '"', limit: 1 }, function(err, data) {
     if ( err ) {
@@ -85,7 +88,7 @@ function song() {
 	    console.log("Song: " + JSON.stringify(data.tracks.items[0].name, null, 2));
 	    console.log("Preview: " + JSON.stringify(data.tracks.items[0].preview_url, null, 2));
 	    console.log("Album: " + JSON.stringify(data.tracks.items[0].album.name, null, 2));
-	})
+	});
   }
 }
 
@@ -119,28 +122,20 @@ if (search === ""){
 	request(queryMovie, function(error, response, body) {
 
 	  if (!error && response.statusCode === 200) {
-
-	  	console.log("The movie was released in " + JSON.parse(body).Released + ".");
+	  	console.log("Title: " + JSON.parse(body).Title);
+	  	console.log("Release: " + JSON.parse(body).Released);
+	  	console.log("Rated: " + JSON.parse(body).Rated);
+	  	console.log("Country: " + JSON.parse(body).Country);
+	  	console.log("Language: " + JSON.parse(body).Language);
+	  	console.log("Plot: " + JSON.parse(body).Plot + ".");
+	  	console.log("Actors: " + JSON.parse(body).Actors);
+	  	console.log("IMDb Rating: " + JSON.parse(body).imdbRating);
+	  	console.log("Tomatometer: " + JSON.parse(body).tomatoRating);
+	  	console.log("Rotten Tomatoes Link: " + JSON.parse(body).tomatoURL);
 	  	}
 	  });
 	}
 }
-
-// 	if (search = "") {
-// 	search = "Mr.+Nobody";
-// 	request(queryMovie, function (error, response, body) {
-// 	  if (!error && response.statusCode === 200) {
-// 	    console.log(body); 
-// 	}
-//   })
-// } else {
-// 	request(queryMovie, function (error, response, body) {
-// 	  if (!error && response.statusCode === 200) {
-// 	    console.log(body); 
-// 	}
-//   })
-//  }
-// }
 
 // ============================================================================================
 // node liri.js do-what-it-says
@@ -149,7 +144,18 @@ if (search === ""){
 // It should run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
 // Feel free to change the text in that document to test out the feature for other commands.
 
-
+function doThis() {
+	fs.readFile('random.txt', 'utf-8', function(err, data) {
+	  if (err) {
+	  	console.log(err);
+	  } else {
+	  	newData = data.split(",");
+	  	command = newData[0];
+	  	search = newData[1];
+	  	liriBot(command);
+	}
+  });
+}
 
 // ============================================================================================
 // BONUS
@@ -159,3 +165,4 @@ if (search === ""){
 // Make sure you append each command you run to the log.txt file.
 
 // Do not overwrite your file each time you run a command.
+liriBot(command);
