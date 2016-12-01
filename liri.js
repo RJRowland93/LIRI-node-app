@@ -5,8 +5,11 @@ var fs = require("fs");
 var request = require("request");
 var spotify = require("spotify");
 var Twitter = require("twitter");
+var moment = require("moment");
 var queryMovie = "http://www.omdbapi.com/?t=" + search + "&y=&plot=short&r=json&tomatoes=true";
 var count = 0;
+var now = Date.now();
+var logDate = moment(now).format('MMMM Do YYYY, h:mm:ss a');
 
 var twitKeys = new Twitter({
   consumer_key: keys.consumer_key,
@@ -172,12 +175,11 @@ function doThis() {
 // Make sure you append each command you run to the log.txt file.
 
 // Do not overwrite your file each time you run a command.
-function log() {
-	fs.appendFile('log.txt', tweet(), 'utf-8', (err) => {
+function log(command) {
+	fs.appendFile('log.txt', logDate + ": " + command + "\n", 'utf-8', (err) => {
 	  if (err) throw err;
-	  console.log(command);
 	});
 }
 
+log(command);
 liriBot(command);
-log();
