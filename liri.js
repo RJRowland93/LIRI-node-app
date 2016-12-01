@@ -1,13 +1,11 @@
 var keys = require("./keys.js");
 var command = process.argv[2];
 var search = process.argv.slice(3).join("+");
-
+var fs = require("fs");
 var request = require("request");
 var spotify = require("spotify");
-var fs = require("fs");
-
 var Twitter = require("twitter");
-
+var queryMovie = "http://www.omdbapi.com/?t=" + search + "&y=&plot=short&r=json";
 var count = 0;
 
 var twitKeys = new Twitter({
@@ -25,7 +23,7 @@ switch (command) {
 		song();
 		break;
 	case "movie-this":
-		console.log("movie");
+		movie();
 		break;
 	case "do-what-it-says":
 		console.log("do what");
@@ -62,8 +60,8 @@ function song() {
 	// The song's name
 	// A preview link of the song from Spotify
 	// The album that the song is from
-	// if no song is provided then your program will default to
-	// "The Sign" by Ace of Base}
+		// if no song is provided then your program will default to
+		// "The Sign" by Ace of Base}
 
 	if (search === "") {
 	search = "the sign";
@@ -95,25 +93,64 @@ function song() {
 // node liri.js movie-this '<movie name here>'
 // ============================================================================================
 // This will output the following information to your terminal/bash window:
+	// Title of the movie.
+	// Year the movie came out.
+	// IMDB Rating of the movie.
+	// Country where the movie was produced.
+	// Language of the movie.
+	// Plot of the movie.
+	// Actors in the movie.
+	// Rotten Tomatoes Rating.
+	// Rotten Tomatoes URL.
+	// If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
 
-function movie() {}
+function movie() {
+if (search === ""){
+	search = "Mr.Nobody";
+	queryMovie = "http://www.omdbapi.com/?t=" + search + "&y=&plot=short&r=json";
+	request(queryMovie, function(error, response, body) {
 
-// Title of the movie.
-// Year the movie came out.
-// IMDB Rating of the movie.
-// Country where the movie was produced.
-// Language of the movie.
-// Plot of the movie.
-// Actors in the movie.
-// Rotten Tomatoes Rating.
-// Rotten Tomatoes URL.
-// If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+	  if (!error && response.statusCode === 200) {
+
+	  	console.log("The movie was released in " + JSON.parse(body).Released + ".");
+	  	}
+	  });
+} else {
+	request(queryMovie, function(error, response, body) {
+
+	  if (!error && response.statusCode === 200) {
+
+	  	console.log("The movie was released in " + JSON.parse(body).Released + ".");
+	  	}
+	  });
+	}
+}
+
+// 	if (search = "") {
+// 	search = "Mr.+Nobody";
+// 	request(queryMovie, function (error, response, body) {
+// 	  if (!error && response.statusCode === 200) {
+// 	    console.log(body); 
+// 	}
+//   })
+// } else {
+// 	request(queryMovie, function (error, response, body) {
+// 	  if (!error && response.statusCode === 200) {
+// 	    console.log(body); 
+// 	}
+//   })
+//  }
+// }
+
 // ============================================================================================
 // node liri.js do-what-it-says
 // ============================================================================================
 // Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
 // It should run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
 // Feel free to change the text in that document to test out the feature for other commands.
+
+
+
 // ============================================================================================
 // BONUS
 // ============================================================================================
